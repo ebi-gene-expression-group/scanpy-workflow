@@ -1,9 +1,9 @@
 #!/usr/bin/env nextflow
 
-RAW_COUNT_MATRIX = Channel.fromPath( "${params.scanpy.matrix.raw}" )
-CDNA_GTF = Channel.fromPath( "data/reference/${params.reference.gtf}" )
+RAW_COUNT_MATRIX = Channel.fromPath( "${params.matrix}" )
+CDNA_GTF = Channel.fromPath( "${params.gtf}" )
 
-matrix_file = file("${params.scanpy.matrix.raw}")
+matrix_file = file("${params.matrix}")
 matrix_name = matrix_file.getSimpleName()
 
 // Read in the .mtx format data
