@@ -10,7 +10,7 @@ matrix_name = matrix_file.getSimpleName()
 
 process read_10x {
 
-    conda "envs/scanpy.yml"
+    conda "${projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -33,7 +33,7 @@ process read_10x {
 
 process filter_cells {
 
-    conda "envs/scanpy.yml"
+    conda "${projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -85,7 +85,7 @@ process make_genelist {
 
 process filter_genes {
 
-    conda "envs/scanpy.yml"
+    conda "${projectDir}/envs/scanpy.yml"
     
     publishDir "$WORKFLOW_RESULTS_DIR/matrices", mode: 'copy', overwrite: true
     
@@ -119,7 +119,7 @@ process filter_genes {
 
 process normalise_data {
 
-    conda "envs/scanpy.yml"
+    conda "${projectDir}/envs/scanpy.yml"
     
     publishDir "$WORKFLOW_RESULTS_DIR/matrices", mode: 'copy', overwrite: true
     
@@ -150,7 +150,7 @@ process normalise_data {
 
 process find_variable_genes {
 
-    conda "envs/scanpy.yml"
+    conda "${projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -177,7 +177,7 @@ process find_variable_genes {
 
 process scale_data {
 
-    conda "envs/scanpy.yml"
+    conda "${projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -224,7 +224,7 @@ process scale_data {
 
 process run_pca {
 
-    conda "envs/scanpy.yml"
+    conda "${projectDir}/envs/scanpy.yml"
 
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -309,7 +309,7 @@ process run_pca {
 
 process neighbours {
 
-    conda "envs/scanpy.yml"
+    conda "${projectDir}/envs/scanpy.yml"
 
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -347,7 +347,7 @@ process neighbours {
 
 process find_cluster {
 
-    conda "envs/scanpy.yml"
+    conda "${projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -396,7 +396,7 @@ CLUSTERS_ANNDATA.into{
 
 process run_umap {
 
-    conda "envs/scanpy.yml"
+    conda "${projectDir}/envs/scanpy.yml"
 
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -475,7 +475,7 @@ process run_umap {
 
 process run_tsne {
 
-    conda "envs/scanpy.yml"
+    conda "${projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -548,7 +548,7 @@ process run_tsne {
 
 process find_markers {
 
-    conda "envs/scanpy.yml"
+    conda "${projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
