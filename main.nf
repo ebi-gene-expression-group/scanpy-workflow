@@ -1,5 +1,7 @@
 #!/usr/bin/env nextflow
 
+resultsRoot = params.resultsRoot
+
 RAW_COUNT_MATRIX = Channel.fromPath( "${params.matrix}" )
 CDNA_GTF = Channel.fromPath( "${params.gtf}" )
 
@@ -87,7 +89,7 @@ process filter_genes {
 
     conda "${workflow.projectDir}/envs/scanpy.yml"
     
-    publishDir "$WORKFLOW_RESULTS_DIR/matrices", mode: 'copy', overwrite: true
+    publishDir "$resultsDir/matrices", mode: 'copy', overwrite: true
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -121,7 +123,7 @@ process normalise_data {
 
     conda "${workflow.projectDir}/envs/scanpy.yml"
     
-    publishDir "$WORKFLOW_RESULTS_DIR/matrices", mode: 'copy', overwrite: true
+    publishDir "$resultsDir/matrices", mode: 'copy', overwrite: true
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -230,7 +232,7 @@ process run_pca {
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
     maxRetries 10
     
-    publishDir "$WORKFLOW_RESULTS_DIR/pca", mode: 'copy', overwrite: true
+    publishDir "$resultsDir/pca", mode: 'copy', overwrite: true
     
     input:
         file scaledData from SCALE_DATA_ANNDATA
@@ -353,7 +355,7 @@ process find_cluster {
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
     maxRetries 10
     
-    publishDir "$WORKFLOW_RESULTS_DIR/clustering", mode: 'copy', overwrite: true
+    publishDir "$resultsDir/clustering", mode: 'copy', overwrite: true
 
     input:
         file neighboursData from NEIGHBOURS_ANNDATA
@@ -402,7 +404,7 @@ process run_umap {
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
     maxRetries 10
     
-    publishDir "$WORKFLOW_RESULTS_DIR/umap", mode: 'copy', overwrite: true
+    publishDir "$resultsDir/umap", mode: 'copy', overwrite: true
 
     input:
         file clusteredAnndata from CLUSTERS_ANNDATA_FOR_UMAP
@@ -481,7 +483,7 @@ process run_tsne {
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
     maxRetries 10
     
-    publishDir "$WORKFLOW_RESULTS_DIR/tsne", mode: 'copy', overwrite: true
+    publishDir "$resultsDir/tsne", mode: 'copy', overwrite: true
 
     input:
         file clusteredAnndata from CLUSTERS_ANNDATA_FOR_TSNE
@@ -554,7 +556,7 @@ process find_markers {
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
     maxRetries 10
     
-    publishDir "$WORKFLOW_RESULTS_DIR/markers", mode: 'copy', overwrite: true
+    publishDir "$resultsDir/markers", mode: 'copy', overwrite: true
 
     input:
         each resolution from params.scanpy.find_clusters.resolutions

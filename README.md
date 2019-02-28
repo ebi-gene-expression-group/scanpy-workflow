@@ -38,7 +38,7 @@ You can copy the default configuration, edit the Scanpy and other parameters, an
 The workflow can be run directly from the repository:
 
 ```
-nextflow run -config <your nextflow.config> ebi-gene-expression-group/scanpy-workflow --matrix <mtx zip> --gtf <gtf>
+nextflow run -config <your nextflow.config> ebi-gene-expression-group/scanpy-workflow --matrix <mtx zip> --gtf <gtf> --resultsDir <final results dir>
 ```
 
 This will download the workflow, create any necessary environments, and run the workflow with the specified innputs. Future executions will use a cached copy of the pipeline, should you wish to update the code in future, you can do so like:
