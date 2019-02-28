@@ -59,7 +59,7 @@ process filter_cells {
 
 process make_genelist {
 
-    conda 'bioconductor-rtracklayer'
+    conda "${baseDir}/envs/bioconductor-rtracklayer.yml"
     
     memory { 3.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
