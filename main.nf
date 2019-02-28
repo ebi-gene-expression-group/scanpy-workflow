@@ -89,7 +89,7 @@ process filter_genes {
 
     conda "${workflow.projectDir}/envs/scanpy.yml"
     
-    publishDir "$resultsDir/matrices", mode: 'copy', overwrite: true
+    publishDir "$resultsRoot/matrices", mode: 'copy', overwrite: true
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -123,7 +123,7 @@ process normalise_data {
 
     conda "${workflow.projectDir}/envs/scanpy.yml"
     
-    publishDir "$resultsDir/matrices", mode: 'copy', overwrite: true
+    publishDir "$resultsRoot/matrices", mode: 'copy', overwrite: true
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -232,7 +232,7 @@ process run_pca {
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
     maxRetries 10
     
-    publishDir "$resultsDir/pca", mode: 'copy', overwrite: true
+    publishDir "$resultsRoot/pca", mode: 'copy', overwrite: true
     
     input:
         file scaledData from SCALE_DATA_ANNDATA
@@ -355,7 +355,7 @@ process find_cluster {
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
     maxRetries 10
     
-    publishDir "$resultsDir/clustering", mode: 'copy', overwrite: true
+    publishDir "$resultsRoot/clustering", mode: 'copy', overwrite: true
 
     input:
         file neighboursData from NEIGHBOURS_ANNDATA
@@ -404,7 +404,7 @@ process run_umap {
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
     maxRetries 10
     
-    publishDir "$resultsDir/umap", mode: 'copy', overwrite: true
+    publishDir "$resultsRoot/umap", mode: 'copy', overwrite: true
 
     input:
         file clusteredAnndata from CLUSTERS_ANNDATA_FOR_UMAP
@@ -483,7 +483,7 @@ process run_tsne {
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
     maxRetries 10
     
-    publishDir "$resultsDir/tsne", mode: 'copy', overwrite: true
+    publishDir "$resultsRoot/tsne", mode: 'copy', overwrite: true
 
     input:
         file clusteredAnndata from CLUSTERS_ANNDATA_FOR_TSNE
@@ -556,7 +556,7 @@ process find_markers {
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
     maxRetries 10
     
-    publishDir "$resultsDir/markers", mode: 'copy', overwrite: true
+    publishDir "$resultsRoot/markers", mode: 'copy', overwrite: true
 
     input:
         each resolution from params.scanpy.find_clusters.resolutions
