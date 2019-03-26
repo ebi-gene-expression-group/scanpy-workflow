@@ -553,8 +553,8 @@ process find_markers {
     conda "${workflow.projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
-    maxRetries 10
+    errorStrategy { task.exitStatus == 130 ? 'retry' : 'ignore' }
+    maxRetries 3
     
     publishDir "$resultsRoot/markers", mode: 'copy', overwrite: true
 
