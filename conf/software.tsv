@@ -1,0 +1,2 @@
+Analysis	Software	Environment	Package	Citation
+Downstream analysis (cell/gene filtering, normalisation, dimension reduction, clustering, marker detection)	Scanpy	scanpy	scanpy	Wolf FA, Angerer P, Theis FJ. SCANPY: large-scale single-cell gene expression data analysis. Genome Biol. 2018;19(1):15.
