@@ -8,6 +8,14 @@ This is a Nextflow Workflow leveraging the [scanpy-scripts](https://github.com/e
 
 Workflow dependencies are managed via Conda and Bioconda, so you'll need to set that up, see instructions [here](https://bioconda.github.io/#install-conda). 
 
+#### NXF_CONDA_CACHEDIR
+
+This environment variable is passed to Nextflow to determine the storage locations for environments, you must set it before running the workflow:
+
+```
+export NXF_CONDA_CACHEDIR=/path/to/envs 
+```
+
 ### Nextflow
 
 Obviously you'll need Nexflow itself. If you don't have it already you can install via Conda:
