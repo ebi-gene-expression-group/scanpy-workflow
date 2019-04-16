@@ -1,9 +1,12 @@
 #!/usr/bin/env nextflow
 
 resultsRoot = params.resultsRoot
+etienne_scripts="${workflow.projectDir}/etienne_scripts"
 
 RAW_COUNT_MATRIX = Channel.fromPath( "${params.matrix}" )
 CDNA_GTF = Channel.fromPath( "${params.gtf}" )
+GTF = Channel.fromPath("${params.gtf}")
+SDRF = Channel.fromPath("${params.sdrf}")
 
 matrix_file = file("${params.matrix}")
 matrix_name = matrix_file.getSimpleName()
@@ -175,11 +178,11 @@ process find_variable_genes {
     """
 }
 
-// Run scaling and regression
+// Run scaling (only logarithmize data)
 
 process scale_data {
 
-    conda "${workflow.projectDir}/envs/scanpy.yml"
+    conda "${workflow.projectDir}/envs/etienne_scripts.yml"
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -191,34 +194,8 @@ process scale_data {
     output:
         file "${matrix_name}_scaledata.h5ad" into SCALE_DATA_ANNDATA
 
-    script:
-
-        vars_to_regress = ''
-        if ( params.scanpy.scale_data.containsKey('vars_to_regress') ){
-            vars_to_regress = "-V ${params.scanpy.scale_data.vars_to_regress} "
-        }
-
-        do_log = ''
-        if ( params.scanpy.scale_data.containsKey('do_log') &&  params.scanpy.scale_data.do_log == 'true'){
-            do_log = "--do-log"
-        }
-
-        zero_centre = ''
-        if ( params.scanpy.scale_data.containsKey('zero_centre') && params.scanpy.scale_data.zero_centre == 'false' ){
-            zero_centre = "--no-zero-center"
-        }else{
-            zero_centre = "--zero-center"
-            
-        }
-
-        scale_max = ''
-        if ( params.scanpy.scale_data.containsKey('scale_max') && params.scanpy.scale_data.scale_max != 'none' ){
-            scale_max = "--scale-max ${params.scanpy.scale_data.scale_max}"
-        }
-
     """
-        scanpy-scale-data.py -i ${findVariableGenesData} ${do_log} ${vars_to_regress} ${zero_centre} ${scale_max} \
-            -o ${matrix_name}_scaledata.h5ad  
+        python ${etienne_scripts}/scale_data.py ${findVariableGenesData} ${matrix_name}_scaledata.h5ad  
     """
 }
 
@@ -596,4 +573,23 @@ process find_markers {
                 --method ${params.scanpy.find_markers.method} ${rankby_abs} ${use_raw} --output-plot markers_${resolution}.png \
                 --show-n-genes ${params.scanpy.find_markers.show_n_genes} ${key} 
         """
+}
+
+process merge_matrices {
+
+    conda "${workflow.projectDir}/envs/etienne_scripts.yml"
+    publishDir "$resultsRoot",mode: "copy", overwrite: true
+
+    input:
+        file sdrf from SDRF
+        file gtf from GTF
+        file tsne from TSNE_ANNDATA
+        file umap from UMAP_ANNDATA
+
+    output:
+        file "anndata_merged.h5ad" into RESULTS_SCANPY
+
+    """
+        python ${etienne_scripts}/merge_anndata.py -sdrf ${sdrf} -gtf ${gtf} -matrix ${umap} -tsne ${tsne} -o anndata_merged.h5ad  
+    """
 }
