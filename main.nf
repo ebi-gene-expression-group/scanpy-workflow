@@ -15,7 +15,7 @@ process read_10x {
     conda "${workflow.projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'finish' }
     maxRetries 10
 
     input:
@@ -38,7 +38,7 @@ process filter_cells {
     conda "${workflow.projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'finish' }
     maxRetries 10
 
     input:
@@ -62,7 +62,7 @@ process make_genelist {
     conda "${baseDir}/envs/bioconductor-rtracklayer.yml"
     
     memory { 3.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'finish' }
     maxRetries 5
 
     input:
@@ -92,7 +92,7 @@ process filter_genes {
     publishDir "$resultsRoot/matrices", mode: 'copy', overwrite: true
     
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'finish' }
     maxRetries 10
 
     input:
@@ -126,7 +126,7 @@ process normalise_data {
     publishDir "$resultsRoot/matrices", mode: 'copy', overwrite: true
     
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'finish' }
     maxRetries 10
 
     input:
@@ -155,7 +155,7 @@ process find_variable_genes {
     conda "${workflow.projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'finish' }
     maxRetries 10
 
     input:
@@ -182,7 +182,7 @@ process scale_data {
     conda "${workflow.projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'finish' }
     maxRetries 10
 
     input:
@@ -229,7 +229,7 @@ process run_pca {
     conda "${workflow.projectDir}/envs/scanpy.yml"
 
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'finish' }
     maxRetries 10
     
     publishDir "$resultsRoot/pca", mode: 'copy', overwrite: true
@@ -314,7 +314,7 @@ process neighbours {
     conda "${workflow.projectDir}/envs/scanpy.yml"
 
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'finish' }
     maxRetries 10
     
     input:
@@ -352,7 +352,7 @@ process find_cluster {
     conda "${workflow.projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'finish' }
     maxRetries 10
     
     publishDir "$resultsRoot/clustering", mode: 'copy', overwrite: true
@@ -401,7 +401,7 @@ process run_umap {
     conda "${workflow.projectDir}/envs/scanpy.yml"
 
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'finish' }
     maxRetries 10
     
     publishDir "$resultsRoot/umap", mode: 'copy', overwrite: true
@@ -480,7 +480,7 @@ process run_tsne {
     conda "${workflow.projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'finish' }
     maxRetries 10
     
     publishDir "$resultsRoot/tsne", mode: 'copy', overwrite: true
@@ -553,7 +553,7 @@ process find_markers {
     conda "${workflow.projectDir}/envs/scanpy.yml"
     
     memory { 2.GB * task.attempt }
-    errorStrategy { task.exitStatus == 130 ? 'retry' : 'ignore' }
+    errorStrategy { task.exitStatus == 130 || task.exitStatus == 137 ? 'retry' : 'ignore' }
     maxRetries 3
     
     publishDir "$resultsRoot/markers", mode: 'copy', overwrite: true
