@@ -2,6 +2,7 @@ import argparse
 from scipy.io import mmread
 import pandas as pd
 import scanpy as sc
+import numpy as np
 from ID2gene import ID2gene_converter
 
 parser = argparse.ArgumentParser(description='Combines the information of several anndata files into one. Also modifies the index to use gene names instead of Ensembl IDs, and adds information from the sdrf file.')
@@ -40,7 +41,8 @@ def add_sdrf_info(adata,sdrfpath):
             if not info in quantitative_info:
                 adata.obs[info]=pd.Series(infoData[info])
             else:
-                adata.obs[info]=pd.to_numeric(pd.Series(infoData[info]))
+                series = pd.Series(infoData[info])
+                adata.obs[info]=pd.to_numeric(series.replace("not available",np.nan))
             
 
 if __name__=='__main__':
