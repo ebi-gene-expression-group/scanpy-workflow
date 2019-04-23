@@ -155,7 +155,7 @@ process normalise_data {
 
 process find_variable_genes {
 
-    conda "${workflow.projectDir}/envs/scanpy.yml"
+    conda "${workflow.projectDir}/envs/etienne_scripts.yml"
     
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -169,7 +169,7 @@ process find_variable_genes {
         file "variable_genes.png" into VARIABLE_GENES_PLOT
 
     """
-        etienne_scripts/scanpy-find-variable-genes.py -i ${normalisedData} --flavor ${params.scanpy.find_variable_genes.flavor} \
+        ${etienne_scripts}/scanpy-find-variable-genes.py -i ${normalisedData} --flavor ${params.scanpy.find_variable_genes.flavor} \
             -p mean,disp -l ${params.scanpy.find_variable_genes.min_mean},${params.scanpy.find_variable_genes.min_disp} \
             -j ${params.scanpy.find_variable_genes.max_mean},${params.scanpy.find_variable_genes.max_disp} \
             -b ${params.scanpy.find_variable_genes.n_bins} \
