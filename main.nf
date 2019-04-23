@@ -169,7 +169,7 @@ process find_variable_genes {
         file "variable_genes.png" into VARIABLE_GENES_PLOT
 
     """
-        scanpy-find-variable-genes.py -i ${normalisedData} --flavor ${params.scanpy.find_variable_genes.flavor} \
+        etienne_scripts/scanpy-find-variable-genes.py -i ${normalisedData} --flavor ${params.scanpy.find_variable_genes.flavor} \
             -p mean,disp -l ${params.scanpy.find_variable_genes.min_mean},${params.scanpy.find_variable_genes.min_disp} \
             -j ${params.scanpy.find_variable_genes.max_mean},${params.scanpy.find_variable_genes.max_disp} \
             -b ${params.scanpy.find_variable_genes.n_bins} \
