@@ -166,7 +166,6 @@ process find_variable_genes {
 
     output:
         file "${matrix_name}_findvariablegenes.h5ad" into FIND_VARIABLE_GENES_ANNDATA
-        file "variable_genes.png" into VARIABLE_GENES_PLOT
 
     """
         ${etienne_scripts}/scanpy-find-variable-genes.py -i ${normalisedData} --flavor ${params.scanpy.find_variable_genes.flavor} \

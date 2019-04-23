@@ -1,13 +1,11 @@
 #!/usr/bin/env python3
 
 import logging
-import matplotlib
-matplotlib.use('Agg')
 
 import scanpy.api as sc
 from wrapper_utils import (
     ScanpyArgParser,
-    read_input_object, write_output_object, save_output_plot,
+    read_input_object, write_output_object
 )
 
 
@@ -49,19 +47,6 @@ def main(argv=None):
         else:
             msg = 'Unsupported parameter name "{}", omitted'.format(name)
             logging.warning(msg)
-
-    if args.output_plot:
-        sc.set_figure_params(format=args.output_plot_format)
-        filtered = sc.pp.filter_genes_dispersion(adata.X,
-                                                 flavor=args.flavor,
-                                                 min_mean=min_mean, max_mean=max_mean,
-                                                 min_disp=min_disp, max_disp=max_disp,
-                                                 n_bins=args.n_bins,
-                                                 n_top_genes=args.n_top_genes,
-                                                 log=(args.flavor == 'seurat'))
-        sc.settings.verbosity = 0
-        sc.pl.filter_genes_dispersion(filtered, show=False, save=True)
-        save_output_plot('filter_genes_dispersion', args.output_plot)
 
     #Use highly_variable_genes instead of filter_genes_dispersion
     #This function expects logarithmized data, hence the log1p
