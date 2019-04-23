@@ -52,7 +52,8 @@ def main(argv=None):
     #This function expects logarithmized data, hence the log1p
     #As a consequence, it is not necessary anymore to logarithmize the data in the following process (scale_data).
     # --> scale_data.do_log should be set to false.
-    sc.pp.highly_variable_genes(sc.pp.log1p(adata),
+    sc.pp.log1p(adata)
+    sc.pp.highly_variable_genes(adata,
                                   flavor=args.flavor,
                                   min_mean=min_mean, max_mean=max_mean,
                                   min_disp=min_disp, max_disp=max_disp,

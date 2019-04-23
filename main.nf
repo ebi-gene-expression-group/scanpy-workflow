@@ -202,7 +202,7 @@ process scale_data {
 
 process run_pca {
 
-    conda "${workflow.projectDir}/envs/scanpy.yml"
+    conda "${workflow.projectDir}/envs/etienne_scripts.yml"
 
     memory { 2.GB * task.attempt }
     errorStrategy { task.exitStatus == 130 ? 'retry' : 'finish' }
@@ -219,7 +219,6 @@ process run_pca {
         file 'loadings.csv'
         file 'stdev.txt'
         file 'var_ratio.txt'
-        file 'pca.png'
 
     script:
 
@@ -273,7 +272,7 @@ process run_pca {
       
 
         """
-            scanpy-run-pca.py -i ${scaledData} -o ${matrix_name}_pca.h5ad \
+            ${etienne_scripts}/scanpy-run-pca.py -i ${scaledData} -o ${matrix_name}_pca.h5ad \
                 --output-embeddings-file embeddings.csv --output-loadings-file loadings.csv \
                 --output-stdev-file stdev.txt --output-var-ratio-file var_ratio.txt \
                 --n-pcs ${params.scanpy.pca.n_pcs} --svd-solver ${params.scanpy.pca.svd_solver} \
